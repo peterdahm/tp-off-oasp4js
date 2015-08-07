@@ -1,5 +1,6 @@
 // Visual Studio Code Typings and autocompletion
 /// <reference path="../../../typings/angularjs/angular.d.ts"/>
+
 angular.module('app.offer-mgmt')
     .controller('SpecialSearchCntl', function ($scope, $modal, globalSpinner, paginatedSpecialList, offers, appContext) {
 	'use strict';

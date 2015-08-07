@@ -21,6 +21,9 @@ angular.module('app.offer-mgmt').factory('offerManagementRestService', function 
         },
         getSpecial: function (id) {
             return $http.get(servicePath + '/special/' + id);
+        },
+        getAllSpecials: function() {
+            return $http.get(servicePath + '/special/');
         }
     };
 });
