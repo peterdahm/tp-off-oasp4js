@@ -78,7 +78,8 @@ angular.module('app.offer-mgmt').factory('offers', function (offerManagementRest
 					.loadAllOffers()
 					.then(
 					function (allOffers) {
-						paginatedSpecialList = paginatedSpecialList.map(function (current) {
+						console.log("PSL:" + JSON.stringify(paginatedSpecialList)); 
+						paginatedSpecialList = paginatedSpecialList.result.map(function (current) {
 							var allOffersFiltered = allOffers.filter(function (offer) {
 								return offer.id === current.offerId;
 							});
@@ -145,7 +146,7 @@ angular.module('app.offer-mgmt').factory('offers', function (offerManagementRest
 			loadAllSpecials: function () {
 				var self = this;
 
-				return offerManagementRestService.getAllSpecials().then(function (response) {
+				return offerManagementRestService.getPaginatedSpecials({}).then(function (response) {
 					return self.addOffers(response.data);
 				});
 			},
