@@ -1,3 +1,4 @@
+/// <reference path="../typings/tsd.d.ts" />
 angular.module('app',
     ['ui.select', 'ngRoute', 'app.main', 'app.table-mgmt', 'app.offer-mgmt', 'app.sales-mgmt'])
     .config(function ($locationProvider, uiSelectConfig) {
