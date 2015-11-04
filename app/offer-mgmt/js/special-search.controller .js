@@ -6,16 +6,11 @@ angular.module('app.offer-mgmt')
     // other OASP services)
     // For more details regarding controller concept and assigning model and behavior to $scope object, please check:
     // https://docs.angularjs.org/guide/controller
-    .controller('SpecialSearchCntl', function ($scope, paginatedSpecialsList) { // , tables, paginatedTableList, $modal, globalSpinner, offers, sales
+    .controller('SpecialSearchCntl', function ($scope, paginatedSpecialsList, offers, globalSpinner) { // , tables, paginatedTableList, $modal, sales
         'use strict';
-/*
-        // Internal controller function returning the selected row in the tables table.
-        // In general - if function should not be exposed outside (like for example $scope functions called in the html template)
-        // they should be defined as variables with var keyword usage.
         var selectedSpecial = function () {
             return $scope.selectedItems && $scope.selectedItems.length ? $scope.selectedItems[0] : undefined;
         };
-*/
 
 /*
         // $scope function definition for calling modal dialog for table edition. The function is indirectly called in the table-search.html -
@@ -58,22 +53,13 @@ angular.module('app.offer-mgmt')
             data: paginatedSpecialsList.result
         };
 
-/*
         // function used in pagination - it loads tables when the table page is changed
-        $scope.reloadTables = function () {
-            // calling service tables.getPaginatedTables function
-            // The function fetches data from server (it creates http.get request).
-            // The response handling (in case of success) is placed in the function wrapped in the 'then' object - the lines of code placed in there
-            // will be executed when the successful response from server comes back.
-            // The response is passed as a parameter of this function ('res' object).
-            // For more info regarding running functions asynchronously please check: https://docs.angularjs.org/api/ng/service/$q
-            tables.getPaginatedTables($scope.currentPage, $scope.numPerPage).then(function (res) {
-                // These lines are executed only after successful server response.
-                paginatedTableList = res;
-                $scope.gridOptions.data = paginatedTableList.result;
+        $scope.reloadSpecials = function () {
+            offers.getPaginatedSpecials($scope.currentPage, $scope.numPerPage).then(function (res) {
+                paginatedSpecialsList = res;
+                $scope.gridOptions.data = paginatedSpecialsList.result;
             });
         };
-*/
 
 /*
         // registering a listener which is called whenever $scope.currentPage is changed
@@ -84,80 +70,40 @@ angular.module('app.offer-mgmt')
         });
 */
 
-/*
-        // button definitions for managing tables (5 buttons under the html table on the table-search dialog)
-        // The button definitions are passed into buttonBar directive (<button-bar button-defs="buttonDefs"></button-bar> in the html template).
-        // The button bar directive is defined in the button-bar.directive.js file.
-        // The html template of the directive is defined in the button-bar.html file.
-        // In general <button-bar> html tag will be replaced in the table-search.html by the code of button-bar.html template.
-        // Clicking on the buttons will run the functions specified below.
-        // For more info regarding directives, please check: https://docs.angularjs.org/guide/directive
         $scope.buttonDefs = [
             {
-                label: 'Edit...',
+                label: 'Create...',
                 onClick: function () {
                     // opens edit table dialog on edit button click
-                    $scope.openEditDialog(selectedTable());
+                    $scope.openEditDialog(selectedSpecial());
                 },
                 isActive: function () {
                     // makes button active when there is a table selected
-                    return selectedTable();
+                    return selectedSpecial();
                 }
             },
             {
-                label: 'Reserve',
+                label: 'Update...',
                 onClick: function () {
-                    // changes status of the selected table
-                    // globalSpinner OASP service is used here - wrapping long running tasks in it will result in showing spinner while request is
-                    // processed.
-                    globalSpinner.decorateCallOfFunctionReturningPromise(function () {
-                        return tables.reserve(selectedTable()).then($scope.reloadTables);
-                    });
+                    // opens edit table dialog on edit button click
+                    $scope.openEditDialog(selectedSpecial());
                 },
                 isActive: function () {
-                    // makes button active when there is a FREE table selected
-                    return selectedTable() && selectedTable().state === 'FREE';
+                    // makes button active when there is a table selected
+                    return selectedSpecial();
                 }
             },
             {
-                label: 'Cancel Reservation',
+                label: 'Delete...',
                 onClick: function () {
-                    // changes status of the selected table
                     globalSpinner.decorateCallOfFunctionReturningPromise(function () {
-                        return tables.cancelReservation(selectedTable()).then($scope.reloadTables);
+                        return offers.deleteSpecial(selectedSpecial()).then($scope.reloadSpecials);
                     });
                 },
                 isActive: function () {
-                    // makes button active when there is a RESERVED table selected
-                    return selectedTable() && selectedTable().state === 'RESERVED';
+                    // makes button active when there is a table selected
+                    return selectedSpecial();
                 }
             },
-            {
-                label: 'Occupy',
-                onClick: function () {
-                    // changes status of the selected table
-                    globalSpinner.decorateCallOfFunctionReturningPromise(function () {
-                        return tables.occupy(selectedTable()).then($scope.reloadTables);
-                    });
-                },
-                isActive: function () {
-                    // makes button active when there is a RESERVED or FREE table selected
-                    return selectedTable() && (selectedTable().state === 'RESERVED' || selectedTable().state === 'FREE');
-                }
-            },
-            {
-                label: 'Free',
-                onClick: function () {
-                    // changes status of the selected table
-                    globalSpinner.decorateCallOfFunctionReturningPromise(function () {
-                        return tables.free(selectedTable()).then($scope.reloadTables);
-                    });
-                },
-                isActive: function () {
-                    // makes button active when there is a OCCUPIED table selected
-                    return selectedTable() && selectedTable().state === 'OCCUPIED';
-                }
-            }
         ]; 
-        */
     });

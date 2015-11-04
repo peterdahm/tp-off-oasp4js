@@ -19,6 +19,9 @@ angular.module('app.offer-mgmt').factory('offerManagementRestService', function 
                 }
             };
             return $http.post(servicePath + '/special/search', searchCriteria);
+        },
+        deleteSpecial: function(specialId) {
+            return $http.delete(servicePath + '/special/' + specialId);
         }
     };
 });

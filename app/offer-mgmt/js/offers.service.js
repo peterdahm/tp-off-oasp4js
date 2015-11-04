@@ -22,6 +22,10 @@ angular.module('app.offer-mgmt').factory('offers', function (offerManagementRest
                     angular.copy(response.data, paginatedSpecials);
                     return paginatedSpecials;
                 });
+        },
+        
+        deleteSpecial: function (special) {
+            return offerManagementRestService.deleteSpecial(special.id);
         }
     };
 });
