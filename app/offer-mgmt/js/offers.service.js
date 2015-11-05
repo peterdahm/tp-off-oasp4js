@@ -26,6 +26,13 @@ angular.module('app.offer-mgmt').factory('offers', function (offerManagementRest
         
         deleteSpecial: function (special) {
             return offerManagementRestService.deleteSpecial(special.id);
+        },
+        
+        saveOrUpdateSpecial: function(special) {
+            return offerManagementRestService.saveSpecial(special).
+                then(function (response) {
+                    return response.data;
+                    });
         }
     };
 });

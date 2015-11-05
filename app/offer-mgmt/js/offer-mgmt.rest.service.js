@@ -22,6 +22,10 @@ angular.module('app.offer-mgmt').factory('offerManagementRestService', function 
         },
         deleteSpecial: function(specialId) {
             return $http.delete(servicePath + '/special/' + specialId);
+        },
+        
+        saveSpecial: function(special) {
+            return $http.post(servicePath + '/special', special);
         }
     };
 });
